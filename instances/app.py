@@ -76,13 +76,13 @@ def newTask():
 @app.route('/new-user', methods=['POST'])
 def newUser():
     name = request.form['name']
-    surnames = request.form['surnames']
+    surnames = request.form['surname']
     email = request.form['email']
     password = request.form['password']
 
     if name and surnames and email and password:
         cur = mysql.connection.cursor()
-        sql = "INSERT INTO users (name, surnames, email, password) VALUES (%s, %s, %s, %s)"
+        sql = "INSERT INTO users (name, surname, email, password) VALUES (%s, %s, %s, %s)"
         data = (name, surnames, email, password)
         cur.execute(sql, data)
         mysql.connection.commit()
