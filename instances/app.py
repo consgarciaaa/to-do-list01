@@ -6,7 +6,7 @@ from datetime import datetime
 app = Flask(__name__)
 
 app.config.from_object(config.Config) #Conexion a config donde esta la conexion a mi db que viene desde mi .env
-print(config.Config.MYSQL_HOST) 
+print(config.Config.MYSQL_HOST) #print para ver que mi app.py si esta recibiendo las credenciales a la bd
 
 mysql = MySQL(app)
 
@@ -93,6 +93,22 @@ def deleteTask():
     data = (id,)
     cur.execute(sql, data)
     mysql.connection.commit()
+    return redirect(url_for('tasks'))
+
+@app.route('/edit-task', methods=['POST'])
+def edit_task():
+    task_id = request.form['id']
+    title = request.form['title']
+    description = request.form['description']
+    
+    if title and description and task_id:
+        cur = mysql.connection.cursor()
+        sql = "UPDATE tasks SET title = %s, description = %s WHERE id = %s"
+        data = (title, description, task_id)
+        cur.execute(sql, data)
+        mysql.connection.commit()
+        cur.close()
+    
     return redirect(url_for('tasks'))
 
 

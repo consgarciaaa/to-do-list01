@@ -13,10 +13,9 @@
     <nav class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid">
             <a class="navbar-brand fw-bolder" href="#">MIS TAREAS</a>
-            <span>Bienvenido/a {{session['name']}} {{session['surnames']}}<a href="{{url_for('logout')}}" class="mx-3">Salir</a></span>
+            <span>Bienvenido/a {{ session['name'] }} {{ session['surnames'] }}<a href="{{ url_for('logout') }}" class="mx-3">Salir</a></span>
         </div>
     </nav>
-
 
     <div class="container">
         <div class="card mt-3 w-25 mx-auto d-block">
@@ -29,7 +28,6 @@
                         <i class="fas fa-user-plus"></i> Nuevo Usuario
                     </button>
                 </div>
-                
             </div>
         </div>
 
@@ -39,78 +37,118 @@
                 <div class="col-md-3">
                     <div class="card border-primary mb-3">
                         <div class="card-header bg-primary text-white">
-                            {{task.title}}
+                            {{ task.title }}
                         </div>
                         <div class="card-body">
-                            {{task.description}}
+                            {{ task.description }}
                         </div>
                         <div class="card-footer d-flex justify-content-between">
-                            {{task.date_task}}
-                            <form action="/delete-task" method="post">
-                                <input type="hidden" value="{{task.id}}" name="id">
+                            {{ task.date_task }}
+                            <form action="/delete-task" method="post" class="d-inline">
+                                <input type="hidden" value="{{ task.id }}" name="id">
                                 <button type="submit" class="btn btn-outline-danger btn-sm">Eliminar</button>
                             </form>
+                            <button class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#edit-task-modal"
+                                    data-id="{{ task.id }}" data-title="{{ task.title }}" data-description="{{ task.description }}">
+                                Editar
+                            </button>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
-        
-
     </div>
-
 
     <!-- Task Modal -->
     <div class="modal fade" id="task-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Nueva tarea</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Nueva tarea</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/new-task" method="post">
+                        <label>Título</label>
+                        <input type="text" class="form-control mb-3" name="title">
+                        <label>Descripción</label>
+                        <textarea class="form-control mb-3" rows="5" name="description"></textarea>
+                        <button type="submit" class="btn btn-primary w-100">Guardar</button>
+                    </form>
+                </div>
             </div>
-            <div class="modal-body">
-             <form action="/new-task" method="post">
-                <label>Título</label>
-                <input type="text" class="form-control mb-3" name="title">
-                <label>Descripción</label>
-                <textarea class="form-control mb-3" rows="5" name="description"></textarea>
-                <button type="submit" class="btn btn-primary w-100">Guardar</button>
-             </form>
-            </div>
-        </div>
         </div>
     </div>
 
     <!-- User Modal -->
     <div class="modal fade" id="user-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo usuario</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-             <form action="/new-user" method="post">
-                <div class="row">
-                    <div class="col-6">
-                        <label>Nombre</label>
-                        <input type="text" class="form-control mb-3" name="name">
-                    </div>
-                    <div class="col-6">
-                        <label>Apellidos</label>
-                        <input type="text" class="form-control mb-3" name="surname">
-                    </div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo usuario</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <label>Email</label>
-                <input type="email" class="form-control mb-3" name="email">
-                <label>Contraseña</label>
-                <input type="password" class="form-control mb-3" name="password">
-                <button type="submit" class="btn btn-primary w-100">Guardar</button>
-             </form>
+                <div class="modal-body">
+                    <form action="/new-user" method="post">
+                        <div class="row">
+                            <div class="col-6">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control mb-3" name="name">
+                            </div>
+                            <div class="col-6">
+                                <label>Apellidos</label>
+                                <input type="text" class="form-control mb-3" name="surname">
+                            </div>
+                        </div>
+                        <label>Email</label>
+                        <input type="email" class="form-control mb-3" name="email">
+                        <label>Contraseña</label>
+                        <input type="password" class="form-control mb-3" name="password">
+                        <button type="submit" class="btn btn-primary w-100">Guardar</button>
+                    </form>
+                </div>
             </div>
-        </div>
         </div>
     </div>
-    
+
+    <!-- Edit Task Modal -->
+    <div class="modal fade" id="edit-task-modal" tabindex="-1" aria-labelledby="editTaskLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="editTaskLabel">Editar tarea</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/edit-task" method="post">
+                        <input type="hidden" name="id" id="edit-task-id">
+                        <label>Título</label>
+                        <input type="text" class="form-control mb-3" name="title" id="edit-task-title">
+                        <label>Descripción</label>
+                        <textarea class="form-control mb-3" rows="5" name="description" id="edit-task-description"></textarea>
+                        <button type="submit" class="btn btn-primary w-100">Guardar Cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var editTaskModal = document.getElementById('edit-task-modal');
+        editTaskModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var taskId = button.getAttribute('data-id');
+            var taskTitle = button.getAttribute('data-title');
+            var taskDescription = button.getAttribute('data-description');
+
+            var modalIdInput = editTaskModal.querySelector('#edit-task-id');
+            var modalTitleInput = editTaskModal.querySelector('#edit-task-title');
+            var modalDescriptionInput = editTaskModal.querySelector('#edit-task-description');
+
+            modalIdInput.value = taskId;
+            modalTitleInput.value = taskTitle;
+            modalDescriptionInput.value = taskDescription;
+        });
+    </script>
 </body>
 </html>
