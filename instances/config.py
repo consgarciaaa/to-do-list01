@@ -1,7 +1,12 @@
-MYSQL_HOST="sql8.freemysqlhosting.net"
-MYSQL_USER="sql8730263"
-MYSQL_PASSWORD="bbiMztmCBw"
-MYSQL_DB="sql8730263"
-HEX_SEC_KEY="81e58d1e71693f45a7cebb8a448ec05a"
+import os
+from dotenv import load_dotenv
 
+# Cargar las variables de entorno desde el archivo .env
+load_dotenv()
 
+class Config:
+    MYSQL_HOST = os.getenv("MYSQL_HOST")
+    MYSQL_USER = os.getenv("MYSQL_USER")
+    MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD")
+    MYSQL_DB = os.getenv("MYSQL_DB")
+    SECRET_KEY = os.getenv("HEX_SEC_KEY")
