@@ -1,8 +1,9 @@
 import os
-from dotenv import load_dotenv
+from dotenv import load_dotenv #Para cargar variables de entorno desde un archivo a python
 
 # Cargar las variables de entorno desde el archivo .env
 load_dotenv()
+
 
 class Config:
     MYSQL_HOST = os.getenv("MYSQL_HOST")

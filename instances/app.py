@@ -5,7 +5,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-app.config.from_object(config.Config)
+app.config.from_object(config.Config) #Conexion a config donde esta la conexion a mi db que viene desde mi .env
 
 mysql = MySQL(app)
 
